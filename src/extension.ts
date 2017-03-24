@@ -44,7 +44,7 @@ class IncludeCompletionProvider implements vscode.CompletionItemProvider, vscode
     const contents = match[1].substr(1);
 
     // TODO Get the directories and extensions to search.
-    let dirs = this.dirs;
+    let dirs = this.dirs.slice();
     let exts = vscode.workspace.getConfiguration("include-autocomplete").get("extensions", []);
 
     // Add includes relative to the file.
