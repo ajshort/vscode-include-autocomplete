@@ -124,6 +124,11 @@ class IncludeCompletionProvider implements vscode.CompletionItemProvider, vscode
       }
     }
 
+    // Support ${workspaceRoot}.
+    dirs = dirs.map(dir => {
+      return dir.replace("${workspaceRoot}", vscode.workspace.rootPath);
+    });
+
     this.dirs = dirs;
   }
 
