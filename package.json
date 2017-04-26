@@ -3,7 +3,7 @@
   "displayName": "Include Autocomplete",
   "description": "Autocompletion for C++ includes",
   "icon": "icon.png",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "ajshort",
   "license": "MIT",
   "repository": {
