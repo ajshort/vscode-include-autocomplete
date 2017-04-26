@@ -13,7 +13,7 @@ providing suggestions.
 
 The extension uses the same `c_cpp_properties.json` file as the [Microsoft C++ Tools][cpptools] extension to configure
 the include directories to search. Add additional directories to your platform's `includePath` setting to include it in
-suggestions.
+suggestions. You can use `${workspaceRoot}` in include paths to spcify the current open workspace root.
 
 ## Configuration
 
