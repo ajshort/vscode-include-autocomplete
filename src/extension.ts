@@ -65,14 +65,19 @@ class IncludeCompletionProvider implements vscode.CompletionItemProvider, vscode
     }
 
     // Scan each directory and return the completion items.
+    const seen = new Set<string>();
+
     const promises = dirs.map(async dir => {
       if (!await exists(dir)) {
         return [];
       }
 
       const entries = await readdirAndStat(dir);
+      const unseen = Object.keys(entries).filter(k => !seen.has(k));
 
-      return Object.keys(entries).reduce((items, entry) => {
+      unseen.forEach(val => seen.add(val));
+
+      return unseen.reduce((items, entry) => {
         if (entries[entry].isDirectory()) {
           items.push(new vscode.CompletionItem(entry, vscode.CompletionItemKind.Module));
         } else if (exts.indexOf(extname(entry)) !== -1) {
