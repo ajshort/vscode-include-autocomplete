@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+* Add support for C files.
+
 ## 0.0.3
 
 * Don't include duplicate completion items.

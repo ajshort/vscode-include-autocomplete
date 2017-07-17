@@ -1,13 +1,15 @@
-import STD_HEADERS from "./std-headers";
+import * as std from "./std-headers";
 import * as fs from "fs";
 import { dirname, extname, join } from "path";
 import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
   const provider = new IncludeCompletionProvider();
-
   context.subscriptions.push(provider);
-  context.subscriptions.push(vscode.languages.registerCompletionItemProvider("cpp", provider, "<", '"', "/", "\\"));
+
+  for (const lang of ["c", "cpp"]) {
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(lang, provider, "<", '"', "/", "\\"));
+  }
 }
 
 /**
@@ -61,7 +63,11 @@ class IncludeCompletionProvider implements vscode.CompletionItemProvider, vscode
     if (separator !== -1) {
       dirs = dirs.map(dir => join(dir, contents.substr(0, separator)));
     } else {
-      headers = STD_HEADERS.map(header => new vscode.CompletionItem(header, vscode.CompletionItemKind.File));
+      if (vscode.languages.match("c", document)) {
+        headers = std.C.map(header => new vscode.CompletionItem(header, vscode.CompletionItemKind.File));
+      } else if (vscode.languages.match("cpp", document)) {
+        headers = std.CPP.map(header => new vscode.CompletionItem(header, vscode.CompletionItemKind.File));
+      }
     }
 
     // Scan each directory and return the completion items.
