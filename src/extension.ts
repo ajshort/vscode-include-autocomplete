@@ -84,10 +84,13 @@ class IncludeCompletionProvider implements vscode.CompletionItemProvider, vscode
       unseen.forEach(val => seen.add(val));
 
       return unseen.reduce((items, entry) => {
+        let FolderKind = 18;
+        let FileKind = vscode.CompletionItemKind.File;
+
         if (entries[entry].isDirectory()) {
-          items.push(new vscode.CompletionItem(entry, vscode.CompletionItemKind.Module));
+          items.push(new vscode.CompletionItem(entry, FolderKind));
         } else if (exts.indexOf(extname(entry)) !== -1) {
-          items.push(new vscode.CompletionItem(entry, vscode.CompletionItemKind.File));
+          items.push(new vscode.CompletionItem(entry, FileKind));
         }
 
         return items;
@@ -132,7 +135,10 @@ class IncludeCompletionProvider implements vscode.CompletionItemProvider, vscode
 
     // Support ${workspaceRoot}.
     dirs = dirs.map(dir => {
-      return dir.replace("${workspaceRoot}", vscode.workspace.rootPath);
+      return dir.replace("${workspaceRoot}", vscode.workspace.rootPath)
+                .replace("${workspaceFolder}", vscode.workspace.rootPath)
+                .replace("/**", "")
+                .replace("\\**", "")
     });
 
     this.dirs = dirs;
